@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -11,6 +12,7 @@ import (
 	"insider_case_study/cmd/config"
 	"insider_case_study/db/connection"
 	"insider_case_study/docs"
+	"insider_case_study/i18n"
 	"os"
 	"os/signal"
 )
@@ -41,11 +43,14 @@ func main() {
 	baserouter.InitializeRouters(app, client)
 
 	//Swagger Info configuration
-	docs.SwaggerInfo.Host = os.Getenv("APP_HOST")
+	docs.SwaggerInfo.Host = fmt.Sprint(os.Getenv("APP_HOST"), ":", os.Getenv("APP_PORT"))
+
+	// Init i18n
+	i18n.InitBundle("./i18n/languages")
 
 	// Start listening on port 8000
 	go func() {
-		if err := app.Listen(os.Getenv("APP_PORT")); err != nil {
+		if err := app.Listen(":" + os.Getenv("APP_PORT")); err != nil {
 			panic(err)
 		}
 	}()

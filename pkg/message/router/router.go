@@ -9,11 +9,12 @@ import (
 )
 
 func InitializeRouter(router fiber.Router, client connection.Client) {
-	userRepository := userrepo.New(client.PostgresConnection)
+	userRepository := userrepo.New(client.PostgresConnection, client.RedisConnection)
 	userService := service.New(userRepository)
 	messageController := controller.New(userService)
 
 	// Message routes
 	endpoint := router.Group("/message")
 	endpoint.Post("/", messageController.SendMessage)
+	endpoint.Get("/recipients", messageController.MessageRecipients)
 }

@@ -46,6 +46,94 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/message/": {
+            "post": {
+                "description": "This endpoint is used to send message every 2 minutes when tickerStatus parameter is start",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Message"
+                ],
+                "summary": "Send message",
+                "parameters": [
+                    {
+                        "description": "Send message requests",
+                        "name": "sendMessageRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/messagedto.SendMessageRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/message/recipients": {
+            "get": {
+                "description": "This endpoint is used to get all message recipients",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Message"
+                ],
+                "summary": "Get message recipients",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/messagedto.MessageRecipientsResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "messagedto.MessageRecipientsResponse": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "messagedto.SendMessageRequest": {
+            "type": "object",
+            "properties": {
+                "tickerStatus": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`
